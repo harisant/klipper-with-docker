@@ -2,8 +2,11 @@ FROM debian:bookworm
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y \
+ARG KLIPPER_VERSION=v0.13.0
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
+    ca-certificates \
     python3 \
     python3-dev \
     build-essential \
@@ -18,8 +21,11 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /opt
 
-RUN git clone --depth 1 \
-    https://github.com/Klipper3d/klipper.git
+RUN git clone \
+    --branch ${KLIPPER_VERSION} \
+    --depth 1 \
+    https://github.com/Klipper3d/klipper.git \
+    /opt/klipper
 
 WORKDIR /opt/klipper
 
