@@ -1,0 +1,9 @@
+.git
+.git/*
+__pycache__
+*.pyc
+*.pyo
+*.log
+printer_data
+gcodes
+logs
