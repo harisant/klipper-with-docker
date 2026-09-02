@@ -1,0 +1,11 @@
+# Environment variables file
+.env
+
+# Dynamic printer runtime data folder (created automatically at container runtime)
+klipper/printer_data/
+
+# OS / Editor junk
+.DS_Store
+.vscode/
+.idea/
+*.swp

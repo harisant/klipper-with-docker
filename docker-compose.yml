@@ -16,6 +16,8 @@ services:
       dockerfile: Dockerfile
     container_name: klipper
     restart: unless-stopped
+    env_file:
+      - .env
 
     # Dibutuhkan agar Klipper dapat mengakses USB/serial MCU
     privileged: true
@@ -23,9 +25,18 @@ services:
     volumes:
       - /dev:/dev
       - ./klipper/printer_data:/opt/printer_data
+      - ./klipper/printer_configs:/opt/printer_configs:ro
 
     environment:
-      - TZ=Asia/Jakarta
+      - TZ=${TZ:-Asia/Jakarta}
+      - PRINTER_TYPE=${PRINTER_TYPE:-ender3_pro}
+      - MCU_SERIAL=${MCU_SERIAL:-/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0}
+      - PRINTER_KINEMATICS=${PRINTER_KINEMATICS:-cartesian}
+      - PRINTER_MAX_VELOCITY=${PRINTER_MAX_VELOCITY:-300}
+      - PRINTER_MAX_ACCEL=${PRINTER_MAX_ACCEL:-3000}
+      - PRINTER_MAX_Z_VELOCITY=${PRINTER_MAX_Z_VELOCITY:-5}
+      - PRINTER_MAX_Z_ACCEL=${PRINTER_MAX_Z_ACCEL:-100}
+
 
     cap_add:
       - SYS_NICE
@@ -41,9 +52,11 @@ services:
       dockerfile: Dockerfile
     container_name: moonraker
     restart: unless-stopped
+    env_file:
+      - .env
 
     ports:
-      - "7125:7125"
+      - "${MOONRAKER_PORT:-7125}:7125"
 
     volumes:
       - ./klipper/printer_data:/opt/printer_data
@@ -60,12 +73,14 @@ services:
     image: ghcr.io/mainsail-crew/mainsail:latest
     container_name: mainsail
     restart: unless-stopped
+    env_file:
+      - .env
 
     volumes:
     - ./mainsail/nginx.conf:/etc/nginx/conf.d/default.conf:ro
 
     ports:
-      - "8000:8080"
+      - "${MAINSAIL_PORT:-8000}:8080"
 
     depends_on:
       - moonraker
@@ -77,3 +92,4 @@ services:
 networks:
   klipper_net:
     driver: bridge
+
