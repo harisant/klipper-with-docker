@@ -59,6 +59,8 @@ RUN mkdir -p \
     /opt/printer_data/logs \
     /opt/printer_data/run
 
+RUN ln -s /opt/printer_data /root/printer_data
+
 WORKDIR /opt/moonraker
 
 CMD ["/opt/moonraker-env/bin/python", \
