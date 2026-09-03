@@ -53,14 +53,14 @@ COPY --from=builder /opt/moonraker /opt/moonraker
 COPY --from=builder /opt/moonraker-env /opt/moonraker-env
 
 RUN mkdir -p \
-    /opt/printer_data/config \
-    /opt/printer_data/database \
-    /opt/printer_data/gcodes \
-    /opt/printer_data/logs \
-    /opt/printer_data/run
+    /root/printer_data/config \
+    /root/printer_data/database \
+    /root/printer_data/gcodes \
+    /root/printer_data/logs \
+    /root/printer_data/run
 
 WORKDIR /opt/moonraker
 
 CMD ["/opt/moonraker-env/bin/python", \
-     "/opt/moonraker/moonraker/moonraker.py", \
-     "-c", "/opt/printer_data/config/moonraker.conf"]
+    "/opt/moonraker/moonraker/moonraker.py", \
+    "-c", "/root/printer_data/config/moonraker.conf"]

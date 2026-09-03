@@ -61,8 +61,8 @@ services:
       - "${MOONRAKER_PORT:-7125}:7125"
 
     volumes:
-      - ./klipper/printer_data:/opt/printer_data
-      - ./moonraker/moonraker.conf:/opt/printer_data/config/moonraker.conf:ro
+      - ./klipper/printer_data:/root/printer_data
+      - ./moonraker/moonraker.conf:/root/printer_data/config/moonraker.conf:ro
 
     depends_on:
       - klipper
