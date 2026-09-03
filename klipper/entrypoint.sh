@@ -11,11 +11,8 @@ PRINTER_TYPE="${PRINTER_TYPE:-ender3_pro}"
 PROFILE_TEMPLATE="/opt/printer_configs/${PRINTER_TYPE}.cfg"
 FALLBACK_TEMPLATE="/opt/printer_data/config/printer.cfg.template"
 
-# Copy macros.cfg ke printer_data jika belum ada
-if [ -f "/opt/printer_configs/macros.cfg" ] && [ ! -f "/opt/printer_data/config/macros.cfg" ]; then
-    echo "Copying macros.cfg template..."
-    cp /opt/printer_configs/macros.cfg /opt/printer_data/config/macros.cfg
-fi
+echo "Copying macros.cfg template..."
+cp /opt/printer_configs/macros.cfg /opt/printer_data/config/macros.cfg
 
 # Select source template
     SOURCE_TEMPLATE=""
