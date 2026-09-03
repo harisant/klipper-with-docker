@@ -60,7 +60,7 @@ RUN mkdir -p \
     /opt/printer_data/logs \
     /opt/printer_data/run
 
-RUN ln -s /opt/printer_data/gcodes /root/printer_data/gcodes
+RUN ln -s /root/printer_data/gcodes /opt/printer_data/gcodes
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
