@@ -29,4 +29,4 @@ RUN git clone \
 
 WORKDIR /opt/klipper
 
-CMD ["make"]
+CMD ["tail", "-f", "/dev/null"]

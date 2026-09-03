@@ -11,20 +11,20 @@ PRINTER_TYPE="${PRINTER_TYPE:-ender3_pro}"
 PROFILE_TEMPLATE="/opt/printer_configs/${PRINTER_TYPE}.cfg"
 FALLBACK_TEMPLATE="/opt/printer_data/config/printer.cfg.template"
 
-# Select source template
-SOURCE_TEMPLATE=""
-if [ -f "$PROFILE_TEMPLATE" ]; then
-    echo "Using printer profile template: $PROFILE_TEMPLATE"
-    SOURCE_TEMPLATE="$PROFILE_TEMPLATE"
-elif [ -f "$FALLBACK_TEMPLATE" ]; then
-    echo "Using fallback template: $FALLBACK_TEMPLATE"
-    SOURCE_TEMPLATE="$FALLBACK_TEMPLATE"
-elif [ -f "$CONFIG_FILE" ]; then
-    SOURCE_TEMPLATE="$CONFIG_FILE"
-fi
+# Hanya generate printer.cfg dari template jika printer.cfg BELUM ADA
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo "printer.cfg tidak ditemukan. Mengisi awal dari template..."
+    SOURCE_TEMPLATE=""
+    if [ -f "$PROFILE_TEMPLATE" ]; then
+        echo "Using printer profile template: $PROFILE_TEMPLATE"
+        SOURCE_TEMPLATE="$PROFILE_TEMPLATE"
+    elif [ -f "$FALLBACK_TEMPLATE" ]; then
+        echo "Using fallback template: $FALLBACK_TEMPLATE"
+        SOURCE_TEMPLATE="$FALLBACK_TEMPLATE"
+    fi
 
-if [ -n "$SOURCE_TEMPLATE" ]; then
-    /opt/klipper-env/bin/python -c '
+    if [ -n "$SOURCE_TEMPLATE" ]; then
+        /opt/klipper-env/bin/python -c '
 import os, string
 src = "'"$SOURCE_TEMPLATE"'"
 dest = "'"$CONFIG_FILE"'"
@@ -34,6 +34,9 @@ rendered = template.safe_substitute(os.environ)
 with open(dest, "w") as f:
     f.write(rendered)
 '
+    fi
+else
+    echo "Menggunakan printer.cfg persisten yang sudah ada di $CONFIG_FILE"
 fi
 
 exec /opt/klipper-env/bin/python \
